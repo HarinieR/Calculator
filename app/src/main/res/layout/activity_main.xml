@@ -1,18 +1,173 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/dim_bg"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
-</android.support.constraint.ConstraintLayout>
+    <EditText
+        android:id="@+id/EditTxtView"
+        style="@style/editTxtStyle"
+        app:fontFamily="sans-serif-condensed"
+        />
+
+    <TextView
+        android:id="@+id/ResTxtView"
+        style="@style/resTxtStyle"
+        app:fontFamily="serif" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <Button
+            android:id="@+id/BtnPercentage"
+            style="@style/ButtonStyle"
+            android:text="@string/percentage"
+            app:fontFamily="serif-monospace"/>
+
+        <Button
+            android:id="@+id/BtnClear"
+            style="@style/ButtonStyle"
+            android:text="@string/clear"
+            app:fontFamily="serif-monospace" />
+
+        <Button
+            android:id="@+id/BtnBackspace"
+            style="@style/BckspcuttonStyle"
+            android:text="@string/backspace"
+            app:fontFamily="serif-monospace" />
+
+        <Button
+            android:id="@+id/BtnAdd"
+            style="@style/funStyle"
+            android:text="@string/add"
+            app:fontFamily="sans-serif" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <Button
+            android:id="@+id/BtnSeven"
+            style="@style/NumberStyle"
+            android:text="@string/btnSeven"
+            app:fontFamily="sans-serif-smallcaps"/>
+
+        <Button
+            android:id="@+id/BtnEight"
+            style="@style/NumberStyle"
+            android:text="@string/btnEight"
+            app:fontFamily="sans-serif-smallcaps"/>
+
+        <Button
+            android:id="@+id/BtnNine"
+            style="@style/NumberStyle"
+            android:text="@string/btnNine"
+            app:fontFamily="sans-serif-smallcaps"/>
+
+        <Button
+            android:id="@+id/BtnSubtract"
+            style="@style/funStyle"
+            android:text="@string/subtract"
+            app:fontFamily="sans-serif" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <Button
+            android:id="@+id/BtnFour"
+            style="@style/NumberStyle"
+            android:text="@string/btnFour"
+            app:fontFamily="sans-serif-smallcaps"/>
+
+        <Button
+            android:id="@+id/BtnFive"
+            style="@style/NumberStyle"
+            android:text="@string/btnFive"
+            app:fontFamily="sans-serif-smallcaps"/>
+
+        <Button
+            android:id="@+id/BtnSix"
+            style="@style/NumberStyle"
+            android:text="@string/btnSix"
+            app:fontFamily="sans-serif-smallcaps"/>
+
+        <Button
+            android:id="@+id/BtnMultiply"
+            style="@style/funStyle"
+            android:text="@string/multiply"
+            app:fontFamily="sans-serif" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <Button
+            android:id="@+id/BtnOne"
+            style="@style/NumberStyle"
+            android:text="@string/btnOne"
+            app:fontFamily="sans-serif-smallcaps" />
+
+        <Button
+            android:id="@+id/BtnTwo"
+            style="@style/NumberStyle"
+            android:text="@string/btnTwo"
+            app:fontFamily="sans-serif-smallcaps"/>
+
+        <Button
+            android:id="@+id/BtnThree"
+            style="@style/NumberStyle"
+            android:text="@string/btnThree"
+            app:fontFamily="sans-serif-smallcaps"/>
+
+        <Button
+            android:id="@+id/BtnDivide"
+            style="@style/funStyle"
+            android:text="@string/divide"
+            app:fontFamily="sans-serif" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <Button
+            android:id="@+id/BtnZero"
+            style="@style/ZeroNumberStyle"
+            android:text="@string/btnZero"
+            app:fontFamily="sans-serif-smallcaps"/>
+
+        <Button
+            android:id="@+id/BtnDot"
+            style="@style/NumberStyle"
+            android:text="@string/btnDot"
+            app:fontFamily="sans-serif-smallcaps" />
+
+        <Button
+            android:id="@+id/BtnEqualTo"
+            style="@style/funStyle"
+            android:text="@string/Equals"
+            app:fontFamily="sans-serif" />
+
+    </LinearLayout>
+
+
+</LinearLayout>
