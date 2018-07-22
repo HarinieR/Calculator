@@ -64,18 +64,19 @@
         <item name="android:layout_weight">1</item>
         <item name="android:background">@android:color/transparent</item>
         <item name="android:cursorVisible">true</item>
+        <item name="android:textCursorDrawable">@drawable/cursor_color</item>
         <item name="android:gravity">right</item>
         <item name="android:nextFocusRight">@id/EditTxtView</item>
         <item name="android:paddingLeft">@dimen/viewPaddingLeft</item>
         <item name="android:paddingRight">@dimen/viewPaddingRight</item>
         <item name="android:paddingTop">@dimen/viewPaddingTop</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:textCursorDrawable">@drawable/cursor_color</item>
         <item name="android:textSize">@dimen/editTxtSize</item>
+
+        <!-- make Edit Text view have single line scrolled horizontally -->
         <item name="android:maxLines">1</item>
         <item name="android:lines">1</item>
         <item name="android:singleLine">true</item>
-        <item name="android:inputType">text</item>
     </style>
 
     <style name="resTxtStyle">
