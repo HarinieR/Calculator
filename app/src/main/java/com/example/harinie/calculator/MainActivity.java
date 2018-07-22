@@ -52,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
          */
 
         mEditTxt.setOnTouchListener(new View.OnTouchListener() {
-
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 v.onTouchEvent(event);
@@ -232,7 +231,6 @@ public class MainActivity extends AppCompatActivity {
                     mEditTxt.setText(null);
                     adjustCursor();
                 }
-
             }
         });
 
@@ -289,26 +287,19 @@ public class MainActivity extends AppCompatActivity {
          */
 
         CharSequence currentText = mEditTxt.getText();
-
         if (currentText.length() > 0) {
-
             String endString = currentText.subSequence(currentText.length() - 1, currentText.length()).toString();
-
             if (endString.endsWith(symbol)) {
                 return false;
             }
-
         }
-
         else if((currentText.length() == 0) && symbol.equals(res.getString(R.string.btnDot))){
             return true;
         }
         else {
             return false;
         }
-
         return true;
-
     }
 
 }
