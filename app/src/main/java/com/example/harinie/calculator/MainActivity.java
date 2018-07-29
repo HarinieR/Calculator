@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
     private Button mClear;
     private Button mBackspace;
 
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -47,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         initViews();
 
         /**
-         *  Disable the soft keyboard that automatically pops up from the edit text view
+         *  Disable the soft keyboard that automatically pops up from the edit text view when clicked
          *  by using InputMethodManager (imm)
          */
 
@@ -238,9 +237,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initViews() {
 
-        /**
-         *  Initialising the views
-         */
+        /* Initialising the views */
 
         res = getResources();
 
@@ -273,32 +270,43 @@ public class MainActivity extends AppCompatActivity {
 
     private void adjustCursor() {
 
-        /**
-         *  Setting the cursor position always to be at the end of the expression
-         */
+        /* Setting the cursor position always to be at the end of the expression */
 
         mEditTxt.setSelection(mEditTxt.getText().length());
     }
 
     private boolean checkSign(String symbol) {
 
-        /**
-         *  To check whether the user have already pressed the symbol and handle accordingly.
-         */
+        /* To check what symbol the user have pressed and handle accordingly. */
 
         CharSequence currentText = mEditTxt.getText();
-        if (currentText.length() > 0) {
+        if ((currentText.length() == 0) && symbol.equals(res.getString(R.string.btnDot))) {
+            mEditTxt.setText(res.getString(R.string.btnZero));
+            return true;
+        } else if (currentText.length() > 0) {
             String endString = currentText.subSequence(currentText.length() - 1, currentText.length()).toString();
+
             if (endString.endsWith(symbol)) {
                 return false;
+            } else if ((symbol.equals(res.getString(R.string.btnDot))) && endString.matches("[\\u002B\\u002D\\u00D7\\u00F7\\u0025]")) {
+                mEditTxt.setText(mEditTxt.getText().toString() + res.getString(R.string.btnZero));
+                return true;
+            } else if ((symbol.equals(res.getString(R.string.btnDot))) && endString.matches("\\d")) {
+                /* No two dots allowed in a number */
+                String[] data = currentText.toString().split("[\\u002B\\u002D\\u00D7\\u00F7\\u0025]");
+                String currentExp = data[data.length - 1];
+                if (currentExp.contains(".")) {
+                    return false;
+                }
+            } else if (symbol.matches("[\\u002B\\u002D\\u00D7\\u00F7\\u0025]") && endString.matches("[\\u002B\\u002D\\u00D7\\u00F7\\u0025]")) {
+                mEditTxt.setText(currentText.subSequence(0, currentText.length() - 1));
+                return true;
             }
-        }
-        else if((currentText.length() == 0) && symbol.equals(res.getString(R.string.btnDot))){
-            return true;
-        }
-        else {
+
+        } else {
             return false;
         }
+
         return true;
     }
 
