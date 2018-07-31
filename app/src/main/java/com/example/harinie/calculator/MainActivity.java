@@ -3,6 +3,9 @@ package com.example.harinie.calculator;
 import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -45,9 +48,9 @@ public class MainActivity extends AppCompatActivity {
 
         initViews();
 
-        /**
-         *  Disable the soft keyboard that automatically pops up from the edit text view when clicked
-         *  by using InputMethodManager (imm)
+        /*
+           Disable the soft keyboard that automatically pops up from the edit text view when clicked
+           by using InputMethodManager (imm)
          */
 
         mEditTxt.setOnTouchListener(new View.OnTouchListener() {
@@ -65,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         mOne.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mEditTxt.setText(mEditTxt.getText().toString() + res.getString(R.string.btnOne));
+                mEditTxt.setText(getString(R.string.input_numbr,mEditTxt.getText().toString(), res.getString(R.string.btnOne)));
                 adjustCursor();
             }
         });
@@ -73,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         mTwo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mEditTxt.setText(mEditTxt.getText().toString() + res.getString(R.string.btnTwo));
+                mEditTxt.setText(getString(R.string.input_numbr,mEditTxt.getText().toString(), res.getString(R.string.btnTwo)));
                 adjustCursor();
             }
         });
@@ -81,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         mThree.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mEditTxt.setText(mEditTxt.getText().toString() + res.getString(R.string.btnThree));
+                mEditTxt.setText(getString(R.string.input_numbr,mEditTxt.getText().toString(), res.getString(R.string.btnThree)));
                 adjustCursor();
             }
         });
@@ -89,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
         mFour.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mEditTxt.setText(mEditTxt.getText().toString() + res.getString(R.string.btnFour));
+                mEditTxt.setText(getString(R.string.input_numbr,mEditTxt.getText().toString(), res.getString(R.string.btnFour)));
                 adjustCursor();
             }
         });
@@ -97,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
         mFive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mEditTxt.setText(mEditTxt.getText().toString() + res.getString(R.string.btnFive));
+                mEditTxt.setText(getString(R.string.input_numbr,mEditTxt.getText().toString(), res.getString(R.string.btnFive)));
                 adjustCursor();
             }
         });
@@ -105,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
         mSix.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mEditTxt.setText(mEditTxt.getText().toString() + res.getString(R.string.btnSix));
+                mEditTxt.setText(getString(R.string.input_numbr,mEditTxt.getText().toString(), res.getString(R.string.btnSix)));
                 adjustCursor();
             }
         });
@@ -113,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
         mSeven.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mEditTxt.setText(mEditTxt.getText().toString() + res.getString(R.string.btnSeven));
+                mEditTxt.setText(getString(R.string.input_numbr,mEditTxt.getText().toString(), res.getString(R.string.btnSeven)));
                 adjustCursor();
             }
         });
@@ -121,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
         mEight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mEditTxt.setText(mEditTxt.getText().toString() + res.getString(R.string.btnEight));
+                mEditTxt.setText(getString(R.string.input_numbr,mEditTxt.getText().toString(), res.getString(R.string.btnEight)));
                 adjustCursor();
             }
         });
@@ -129,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
         mNine.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mEditTxt.setText(mEditTxt.getText().toString() + res.getString(R.string.btnNine));
+                mEditTxt.setText(getString(R.string.input_numbr,mEditTxt.getText().toString(), res.getString(R.string.btnNine)));
                 adjustCursor();
             }
         });
@@ -137,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
         mZero.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mEditTxt.setText(mEditTxt.getText().toString() + res.getString(R.string.btnZero));
+                mEditTxt.setText(getString(R.string.input_numbr,mEditTxt.getText().toString(), res.getString(R.string.btnZero)));
                 adjustCursor();
             }
         });
@@ -147,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String symbol = res.getString(R.string.btnDot);
                 if (checkSign(symbol)) {
-                    mEditTxt.setText(mEditTxt.getText().toString() + symbol);
+                    mEditTxt.setText(getString(R.string.input_numbr,mEditTxt.getText().toString(), symbol));
                     adjustCursor();
                 }
             }
@@ -158,7 +161,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String symbol = res.getString(R.string.add);
                 if (checkSign(symbol)) {
-                    mEditTxt.setText(mEditTxt.getText().toString() + symbol);
+                    mEditTxt.setText(getString(R.string.input_numbr,mEditTxt.getText().toString(), symbol));
+                    setFontColor(symbol);
                     adjustCursor();
                 }
             }
@@ -169,7 +173,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String symbol = res.getString(R.string.subtract);
                 if (checkSign(symbol)) {
-                    mEditTxt.setText(mEditTxt.getText().toString() + symbol);
+                    mEditTxt.setText(getString(R.string.input_numbr,mEditTxt.getText().toString(), symbol));
+                    setFontColor(symbol);
                     adjustCursor();
                 }
             }
@@ -181,7 +186,8 @@ public class MainActivity extends AppCompatActivity {
                 String symbol = res.getString(R.string.multiply);
 
                 if (checkSign(symbol)) {
-                    mEditTxt.setText(mEditTxt.getText().toString() + symbol);
+                    mEditTxt.setText(getString(R.string.input_numbr,mEditTxt.getText().toString(), symbol));
+                    setFontColor(symbol);
                     adjustCursor();
                 }
             }
@@ -193,7 +199,8 @@ public class MainActivity extends AppCompatActivity {
                 String symbol = res.getString(R.string.divide);
 
                 if (checkSign(symbol)) {
-                    mEditTxt.setText(mEditTxt.getText().toString() + symbol);
+                    mEditTxt.setText(getString(R.string.input_numbr,mEditTxt.getText().toString(), symbol));
+                    setFontColor(symbol);
                     adjustCursor();
                 }
             }
@@ -205,7 +212,8 @@ public class MainActivity extends AppCompatActivity {
                 String symbol = res.getString(R.string.percentage);
 
                 if (checkSign(symbol)) {
-                    mEditTxt.setText(mEditTxt.getText().toString() + symbol);
+                    mEditTxt.setText(getString(R.string.input_numbr,mEditTxt.getText().toString(), symbol));
+                    setFontColor(symbol);
                     adjustCursor();
                 }
             }
@@ -275,9 +283,19 @@ public class MainActivity extends AppCompatActivity {
         mEditTxt.setSelection(mEditTxt.getText().length());
     }
 
+    private void setFontColor(String symbol){
+
+        /*  Setting the color of math symbols to the primary color of the app */
+
+        String currentText = mEditTxt.getText().toString();
+        Spannable letterToSpan = new SpannableString(currentText);
+        letterToSpan.setSpan(new ForegroundColorSpan(res.getColor(R.color.colorPrimary)),currentText.length()-1,currentText.length(),Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        mEditTxt.setText(letterToSpan);
+    }
+
     private boolean checkSign(String symbol) {
 
-        /* To check what symbol the user have pressed and handle accordingly. */
+        /* To check what symbol the user have pressed and handle accordingly */
 
         CharSequence currentText = mEditTxt.getText();
         if ((currentText.length() == 0) && symbol.equals(res.getString(R.string.btnDot))) {
@@ -289,7 +307,7 @@ public class MainActivity extends AppCompatActivity {
             if (endString.endsWith(symbol)) {
                 return false;
             } else if ((symbol.equals(res.getString(R.string.btnDot))) && endString.matches("[\\u002B\\u002D\\u00D7\\u00F7\\u0025]")) {
-                mEditTxt.setText(mEditTxt.getText().toString() + res.getString(R.string.btnZero));
+                mEditTxt.setText(getString(R.string.input_numbr,mEditTxt.getText().toString(), res.getString(R.string.btnZero)));
                 return true;
             } else if ((symbol.equals(res.getString(R.string.btnDot))) && endString.matches("\\d")) {
                 /* No two dots allowed in a number */
@@ -300,6 +318,9 @@ public class MainActivity extends AppCompatActivity {
                 }
             } else if (symbol.matches("[\\u002B\\u002D\\u00D7\\u00F7\\u0025]") && endString.matches("[\\u002B\\u002D\\u00D7\\u00F7\\u0025]")) {
                 mEditTxt.setText(currentText.subSequence(0, currentText.length() - 1));
+                return true;
+            }else if (symbol.matches("[\\u002B\\u002D\\u00D7\\u00F7\\u0025]") && endString.matches("[.]")) {
+                mEditTxt.setText(getString(R.string.input_numbr,mEditTxt.getText().toString(), res.getString(R.string.btnZero)));
                 return true;
             }
 

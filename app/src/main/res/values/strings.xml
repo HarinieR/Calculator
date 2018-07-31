@@ -21,4 +21,6 @@
     <string name="btnSeven">7</string>
     <string name="btnEight">8</string>
     <string name="btnNine">9</string>
+    
+    <string name="input_numbr">%s%s</string>
 </resources>
