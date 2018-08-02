@@ -162,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
                 String symbol = res.getString(R.string.add);
                 if (checkSign(symbol)) {
                     mEditTxt.setText(getString(R.string.input_numbr, mEditTxt.getText().toString(), symbol));
-                    setFontColor(symbol);
+                    setFontColor();
                     adjustCursor();
                 }
             }
@@ -172,9 +172,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String symbol = res.getString(R.string.subtract);
+
                 if (checkSign(symbol)) {
                     mEditTxt.setText(getString(R.string.input_numbr, mEditTxt.getText().toString(), symbol));
-                    setFontColor(symbol);
+                    setFontColor();
                     adjustCursor();
                 }
             }
@@ -187,7 +188,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if (checkSign(symbol)) {
                     mEditTxt.setText(getString(R.string.input_numbr, mEditTxt.getText().toString(), symbol));
-                    setFontColor(symbol);
+                    setFontColor();
                     adjustCursor();
                 }
             }
@@ -200,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if (checkSign(symbol)) {
                     mEditTxt.setText(getString(R.string.input_numbr, mEditTxt.getText().toString(), symbol));
-                    setFontColor(symbol);
+                    setFontColor();
                     adjustCursor();
                 }
             }
@@ -213,7 +214,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if (checkSign(symbol)) {
                     mEditTxt.setText(getString(R.string.input_numbr, mEditTxt.getText().toString(), symbol));
-                    setFontColor(symbol);
+                    setFontColor();
                     adjustCursor();
                 }
             }
@@ -243,9 +244,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void initViews() {
 
-        /* Initialising the views */
+    /**
+     * Initialising the views
+     */
+
+    private void initViews() {
 
         res = getResources();
 
@@ -276,26 +280,36 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+    /**
+     * Setting the cursor position always to be at the end of the expression
+     */
+
     private void adjustCursor() {
-
-        /* Setting the cursor position always to be at the end of the expression */
-
         mEditTxt.setSelection(mEditTxt.getText().length());
     }
 
-    private void setFontColor(String symbol) {
 
-        /*  Setting the color of math symbols to the primary color of the app */
+    /**
+     * Setting the color of math symbols to the primary color of the app
+     */
+
+    private void setFontColor() {
 
         String currentText = mEditTxt.getText().toString();
-        Spannable letterToSpan = new SpannableString(currentText);
+        SpannableString letterToSpan = new SpannableString(currentText);
         letterToSpan.setSpan(new ForegroundColorSpan(res.getColor(R.color.colorPrimary)), currentText.length() - 1, currentText.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         mEditTxt.setText(letterToSpan);
+
     }
 
-    private boolean checkSign(String symbol) {
+    /**
+     * To check what symbol the user have pressed and handle accordingly
+     *
+     * @param symbol is the input math symbol pressed by user
+     */
 
-        /* To check what symbol the user have pressed and handle accordingly */
+    private boolean checkSign(String symbol) {
 
         CharSequence currentText = mEditTxt.getText();
         if ((currentText.length() == 0) && symbol.equals(res.getString(R.string.btnDot))) {
@@ -313,9 +327,7 @@ public class MainActivity extends AppCompatActivity {
                 /* No two dots allowed in a number */
                 String[] data = currentText.toString().split("[\\u002B\\u002D\\u00D7\\u00F7\\u0025]");
                 String currentExp = data[data.length - 1];
-                if (currentExp.contains(".")) {
-                    return false;
-                }
+                return !currentExp.contains(".");
             } else if (symbol.matches("[\\u002B\\u002D\\u00D7\\u00F7\\u0025]") && endString.matches("[\\u002B\\u002D\\u00D7\\u00F7\\u0025]")) {
                 mEditTxt.setText(currentText.subSequence(0, currentText.length() - 1));
                 return true;
