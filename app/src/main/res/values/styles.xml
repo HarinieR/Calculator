@@ -72,6 +72,7 @@
         <item name="android:paddingTop">@dimen/viewPaddingTop</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">@dimen/editTxtSize</item>
+        <item name="android:maxLength">140</item>
 
         <!-- make Edit Text view have single line scrolled horizontally -->
         <item name="android:maxLines">1</item>
@@ -87,7 +88,7 @@
         <item name="android:paddingLeft">@dimen/viewPaddingLeft</item>
         <item name="android:paddingRight">@dimen/viewPaddingRight</item>
         <item name="android:paddingBottom">@dimen/viewPaddingBottom</item>
-        <item name="android:textColor">@color/grey</item>
+        <item name="android:textColor">@color/black</item>
         <item name="android:textSize">@dimen/resTxtSize</item>
     </style>
 

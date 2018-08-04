@@ -13,6 +13,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import net.objecthunter.exp4j.Expression;
+import net.objecthunter.exp4j.ExpressionBuilder;
+
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
+
+
 public class MainActivity extends AppCompatActivity {
 
     private Resources res;
@@ -49,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         initViews();
 
         /*
-           Disable the soft keyboard that automatically pops up from the edit text view when clicked
+           Disable the soft keyboard that automatically pops up from the edit text view when clicked or touched
            by using InputMethodManager (imm)
          */
 
@@ -224,6 +232,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 mEditTxt.setText(null);
+                mResTxt.setText(null);
                 adjustCursor();
             }
         });
@@ -239,6 +248,13 @@ public class MainActivity extends AppCompatActivity {
                     mEditTxt.setText(null);
                     adjustCursor();
                 }
+            }
+        });
+
+        mEqualTo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                computeInput();
             }
         });
 
@@ -341,6 +357,63 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return true;
+    }
+
+    /**
+     * Computing the input entered by the User when Equal to button is clicked.
+     * The text from Edit Text is properly corrected for preventing Exceptions
+     * The result is set in Result Text View after formatting.
+     */
+
+    private void computeInput() {
+        String input = mEditTxt.getText().toString();
+
+        if (input.length() > 0) {
+            try {
+                String parsedInput = makeStringProper(input);
+                Expression expression = new ExpressionBuilder(parsedInput).build();
+                double result = expression.evaluate();
+                mResTxt.setText(formatResult(result));
+            } catch (ArithmeticException e) {
+                mResTxt.setText(R.string.btnZero);
+            }
+        }
+    }
+
+    /**
+     * To make the input expression proper to get it evaluated
+     * Since Expression builder doesn't parse the unicode multiply and divide signs,
+     * they are replaced with '*' and '/' respectively.
+     * If the user pressed any MATH symbol and pressed Equal to button, it throws Exception.
+     * To avoid this, the input String has been sliced and returned.
+     *
+     * @param input is the input expression from Edit text view.
+     * @return the parsedInput to be evaluated.
+     */
+
+    private static String makeStringProper(String input) {
+        String parsedInput = input.replaceAll("\\u00D7", "*").replaceAll("\\u00F7", "/");
+
+        if (!Character.isDigit(parsedInput.charAt(parsedInput.length() - 1))) {
+            parsedInput = parsedInput.substring(0, parsedInput.length() - 1);
+        }
+        return parsedInput;
+    }
+
+
+    /**
+     * To format the result accordingly
+     *
+     * @param result is the double to be formatted
+     * @return the formatted string to be displayed in UI
+     */
+
+    private static String formatResult(double result) {
+
+        DecimalFormat decimalFormat = new DecimalFormat("0", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
+        decimalFormat.setMaximumFractionDigits(340);
+        return decimalFormat.format(result);
+
     }
 
 }

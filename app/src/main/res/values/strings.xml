@@ -23,4 +23,7 @@
     <string name="btnNine">9</string>
     
     <string name="input_numbr">%s%s</string>
+
+    <string name="Error">Error</string>
+
 </resources>
