@@ -320,40 +320,52 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * To check what symbol the user have pressed and handle accordingly
+     * To check what symbol the user have pressed
+     * how the Result text view and edit text view state is and handle accordingly
      *
-     * @param symbol is the input math symbol pressed by user
+     * @param symbol is the input math symbol pressed by user for handling
      */
 
     private boolean checkSign(String symbol) {
 
         CharSequence currentText = mEditTxt.getText();
-        if ((currentText.length() == 0) && symbol.equals(res.getString(R.string.btnDot))) {
-            mEditTxt.setText(res.getString(R.string.btnZero));
-            return true;
-        } else if (currentText.length() > 0) {
-            String endString = currentText.subSequence(currentText.length() - 1, currentText.length()).toString();
+        String resTxt = mResTxt.getText().toString();
 
-            if (endString.endsWith(symbol)) {
+        if (resTxt.length() == 0) {
+
+            if ((currentText.length() == 0) && !(symbol.equals(res.getString(R.string.percentage)))) {
+                mEditTxt.setText(res.getString(R.string.btnZero));
+                return true;
+            } else if (currentText.length() > 0) {
+                String endString = currentText.subSequence(currentText.length() - 1, currentText.length()).toString();
+
+                if (endString.endsWith(symbol)) {
+                    return false;
+                } else if ((symbol.equals(res.getString(R.string.btnDot))) && endString.matches("[\\u002B\\u002D\\u00D7\\u00F7\\u0025]")) {
+                    mEditTxt.setText(getString(R.string.input_numbr, mEditTxt.getText().toString(), res.getString(R.string.btnZero)));
+                    return true;
+                } else if ((symbol.equals(res.getString(R.string.btnDot))) && endString.matches("\\d")) {
+                    /* No two dots allowed in a number */
+                    String[] data = currentText.toString().split("[\\u002B\\u002D\\u00D7\\u00F7\\u0025]");
+                    String currentExp = data[data.length - 1];
+                    return !currentExp.contains(".");
+                } else if (symbol.matches("[\\u002B\\u002D\\u00D7\\u00F7\\u0025]") && endString.matches("[\\u002B\\u002D\\u00D7\\u00F7\\u0025]")) {
+                    mEditTxt.setText(currentText.subSequence(0, currentText.length() - 1));
+                    return true;
+                } else if (symbol.matches("[\\u002B\\u002D\\u00D7\\u00F7\\u0025]") && endString.matches("[.]")) {
+                    mEditTxt.setText(getString(R.string.input_numbr, mEditTxt.getText().toString(), res.getString(R.string.btnZero)));
+                    return true;
+                }
+
+            } else {
                 return false;
-            } else if ((symbol.equals(res.getString(R.string.btnDot))) && endString.matches("[\\u002B\\u002D\\u00D7\\u00F7\\u0025]")) {
-                mEditTxt.setText(getString(R.string.input_numbr, mEditTxt.getText().toString(), res.getString(R.string.btnZero)));
-                return true;
-            } else if ((symbol.equals(res.getString(R.string.btnDot))) && endString.matches("\\d")) {
-                /* No two dots allowed in a number */
-                String[] data = currentText.toString().split("[\\u002B\\u002D\\u00D7\\u00F7\\u0025]");
-                String currentExp = data[data.length - 1];
-                return !currentExp.contains(".");
-            } else if (symbol.matches("[\\u002B\\u002D\\u00D7\\u00F7\\u0025]") && endString.matches("[\\u002B\\u002D\\u00D7\\u00F7\\u0025]")) {
-                mEditTxt.setText(currentText.subSequence(0, currentText.length() - 1));
-                return true;
-            } else if (symbol.matches("[\\u002B\\u002D\\u00D7\\u00F7\\u0025]") && endString.matches("[.]")) {
-                mEditTxt.setText(getString(R.string.input_numbr, mEditTxt.getText().toString(), res.getString(R.string.btnZero)));
-                return true;
             }
 
+            return true;
+
         } else {
-            return false;
+            mEditTxt.setText(resTxt);
+            mResTxt.setText(null);
         }
 
         return true;
