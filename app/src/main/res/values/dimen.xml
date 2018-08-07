@@ -9,8 +9,8 @@
     <dimen name="viewPaddingTop">10dp</dimen>
     <dimen name="viewPaddingBottom">5dp</dimen>
 
-    <dimen name="editTxtSize">50sp</dimen>
-    <dimen name="resTxtSize">65sp</dimen>
+    <dimen name="editTxtSize">45sp</dimen>
+    <dimen name="resTxtSize">50sp</dimen>
     <dimen name="btnTxtSize">27sp</dimen>
     <dimen name="fnBtnTxtSize">30sp</dimen>
     <dimen name="BkspcbtnTxtSize">25sp</dimen>

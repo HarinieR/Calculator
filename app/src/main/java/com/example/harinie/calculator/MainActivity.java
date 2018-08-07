@@ -18,6 +18,7 @@ import android.widget.Toast;
 import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
 
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
@@ -207,8 +208,7 @@ public class MainActivity extends AppCompatActivity {
                 String symbol = res.getString(R.string.add);
 
                 if (checkSign(symbol)) {
-                    mEditTxt.setText(getString(R.string.input_numbr, mEditTxt.getText().toString(), symbol));
-                    adjustCursor();
+                    displayText(symbol);
                 }
             }
         });
@@ -219,8 +219,7 @@ public class MainActivity extends AppCompatActivity {
                 String symbol = res.getString(R.string.subtract);
 
                 if (checkSign(symbol)) {
-                    mEditTxt.setText(getString(R.string.input_numbr, mEditTxt.getText().toString(), symbol));
-                    adjustCursor();
+                    displayText(symbol);
                 }
             }
         });
@@ -231,8 +230,7 @@ public class MainActivity extends AppCompatActivity {
                 String symbol = res.getString(R.string.multiply);
 
                 if (checkSign(symbol)) {
-                    mEditTxt.setText(getString(R.string.input_numbr, mEditTxt.getText().toString(), symbol));
-                    adjustCursor();
+                    displayText(symbol);
                 }
             }
         });
@@ -243,8 +241,7 @@ public class MainActivity extends AppCompatActivity {
                 String symbol = res.getString(R.string.divide);
 
                 if (checkSign(symbol)) {
-                    mEditTxt.setText(getString(R.string.input_numbr, mEditTxt.getText().toString(), symbol));
-                    adjustCursor();
+                    displayText(symbol);
                 }
             }
         });
@@ -255,8 +252,7 @@ public class MainActivity extends AppCompatActivity {
                 String symbol = res.getString(R.string.percentage);
 
                 if (checkSign(symbol)) {
-                    mEditTxt.setText(getString(R.string.input_numbr, mEditTxt.getText().toString(), symbol));
-                    adjustCursor();
+                    displayText(symbol);
                 }
             }
         });
@@ -274,13 +270,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 CharSequence currentText = mEditTxt.getText();
-                if (currentText.length() > 1) {
-                    mEditTxt.setText(currentText.subSequence(0, currentText.length() - 1));
-                    adjustCursor();
-                } else {
+                CharSequence resTxt = mResTxt.getText();
+                if (resTxt.length() > 0 || currentText.length() == 0) {
                     mEditTxt.setText(null);
-                    adjustCursor();
+                    mResTxt.setText(null);
+                } else if (currentText.length() > 1) {
+                    mEditTxt.setText(currentText.subSequence(0, currentText.length() - 1));
                 }
+                adjustCursor();
             }
         });
 
@@ -343,8 +340,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Check the length of the characters in Edit Text and
-     * Send vibrating Toast if
-     * Max character limit reached
+     * Send vibrating Toast if max character limit reached
      *
      * Color the MATH symbols  with primary color of the app using regex
      */
@@ -406,7 +402,6 @@ public class MainActivity extends AppCompatActivity {
 
             if ((currentText.length() == 0) && !(symbol.equals(res.getString(R.string.percentage)))) {
                 mEditTxt.setText(res.getString(R.string.btnZero));
-                return true;
             } else if (currentText.length() > 0) {
                 String endString = currentText.subSequence(currentText.length() - 1, currentText.length()).toString();
 
@@ -414,7 +409,6 @@ public class MainActivity extends AppCompatActivity {
                     return false;
                 } else if ((symbol.equals(res.getString(R.string.btnDot))) && endString.matches("[\\u002B\\u002D\\u00D7\\u00F7\\u0025]")) {
                     mEditTxt.setText(getString(R.string.input_numbr, mEditTxt.getText().toString(), res.getString(R.string.btnZero)));
-                    return true;
                 } else if ((symbol.equals(res.getString(R.string.btnDot))) && endString.matches("\\d")) {
                     /* No two dots allowed in a number */
                     String[] data = currentText.split("[\\u002B\\u002D\\u00D7\\u00F7\\u0025]");
@@ -422,25 +416,20 @@ public class MainActivity extends AppCompatActivity {
                     return !currentExp.contains(".");
                 } else if (symbol.matches("[\\u002B\\u002D\\u00D7\\u00F7\\u0025]") && endString.matches("[\\u002B\\u002D\\u00D7\\u00F7\\u0025]")) {
                     mEditTxt.setText(currentText.subSequence(0, currentText.length() - 1));
-                    return true;
                 } else if (symbol.matches("[\\u002B\\u002D\\u00D7\\u00F7\\u0025]") && endString.matches("[.]")) {
                     mEditTxt.setText(getString(R.string.input_numbr, mEditTxt.getText().toString(), res.getString(R.string.btnZero)));
-                    return true;
                 }
 
             } else {
                 return false;
             }
 
-            return true;
-
         } else {
             if (symbol.equals(res.getString(R.string.btnDot))) {
                 mEditTxt.setText(R.string.btnZero);
-                mResTxt.setText(null);
-                return true;
+            } else {
+                mEditTxt.setText(resTxt);
             }
-            mEditTxt.setText(resTxt);
             mResTxt.setText(null);
         }
 
@@ -519,10 +508,27 @@ public class MainActivity extends AppCompatActivity {
 
     private static String formatResult(double result) {
 
-        DecimalFormat decimalFormat = new DecimalFormat("0", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
-        decimalFormat.setMaximumFractionDigits(340);
-        return decimalFormat.format(result);
+        DecimalFormat decimalFormat;
+        decimalFormat = new DecimalFormat("0", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
+        decimalFormat.setMaximumFractionDigits(10);
+        decimalFormat.setRoundingMode(RoundingMode.CEILING);
 
+        if (Double.toString(result).length() > 10) {
+            decimalFormat = new DecimalFormat("#.00", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
+
+            double formattedResult = Double.parseDouble(decimalFormat.format(result));
+            double diff = result - formattedResult;
+
+            decimalFormat = new DecimalFormat("0", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
+
+            if (diff <= 0.00001) {
+                decimalFormat = new DecimalFormat("#.00", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
+                result = Double.parseDouble(decimalFormat.format(result));
+                return Double.toString(result);
+            }
+        }
+
+        return decimalFormat.format(result);
     }
 
 }
