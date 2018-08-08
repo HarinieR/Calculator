@@ -66,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
 
     private Pattern pattern = Pattern.compile("[\\u002B\\u002D\\u00D7\\u00F7\\u0025]");
 
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -77,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
            Disable the soft keyboard that automatically pops up from the edit text view when clicked or touched
            by using InputMethodManager (imm)
          */
+        
         mEditTxt.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
