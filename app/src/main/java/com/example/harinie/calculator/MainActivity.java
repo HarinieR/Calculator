@@ -9,6 +9,9 @@ import android.text.Editable;
 import android.text.Spannable;
 import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
+import android.view.ActionMode;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -74,7 +77,6 @@ public class MainActivity extends AppCompatActivity {
            Disable the soft keyboard that automatically pops up from the edit text view when clicked or touched
            by using InputMethodManager (imm)
          */
-
         mEditTxt.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -86,6 +88,25 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+        mEditTxt.setCustomSelectionActionModeCallback(new ActionMode.Callback() {
+
+            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+                return false;
+            }
+
+            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+                return false;
+            }
+
+            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                return false;
+            }
+
+            public void onDestroyActionMode(ActionMode mode) {
+            }
+        });
+
 
         mOne.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -385,7 +406,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Check the length of the characters in Edit Text and
      * Send vibrating Toast if max character limit reached
-     *
+     * <p>
      * Color the MATH symbols  with primary color of the app using regex
      */
 
@@ -410,7 +431,10 @@ public class MainActivity extends AppCompatActivity {
             Matcher matcher = pattern.matcher(editable.toString());
 
             while (matcher.find()) {
-                editable.setSpan(new ForegroundColorSpan(res.getColor(R.color.colorPrimary)), matcher.start(), matcher.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                char previousInput = editable.toString().charAt(matcher.start() - 1);
+                if (!Character.toString(previousInput).matches("[\\u002B\\u002D\\u00D7\\u00F7\\u0025]")) {
+                    editable.setSpan(new ForegroundColorSpan(res.getColor(R.color.colorPrimary)), matcher.start(), matcher.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                }
             }
         }
     };
@@ -459,7 +483,15 @@ public class MainActivity extends AppCompatActivity {
                     String currentExp = data[data.length - 1];
                     return !currentExp.contains(".");
                 } else if (symbol.matches("[\\u002B\\u002D\\u00D7\\u00F7\\u0025]") && endString.matches("[\\u002B\\u002D\\u00D7\\u00F7\\u0025]")) {
-                    mEditTxt.setText(currentText.subSequence(0, currentText.length() - 1));
+
+                    if (symbol.matches("[\\u002D]") && endString.matches("[\\u00D7\\u00F7\\u0025]")) {
+                        return true;
+                    } else if (symbol.matches("[\\u002B\\u00D7\\u00F7\\u0025]") && currentText.matches("^.*[\\u002B\\u002D\\u00D7\\u00F7\\u0025]{2}$")) {
+                        mEditTxt.setText(currentText.subSequence(0, currentText.length() - 2));
+                    } else {
+                        mEditTxt.setText(currentText.subSequence(0, currentText.length() - 1));
+                    }
+
                 } else if (symbol.matches("[\\u002B\\u002D\\u00D7\\u00F7\\u0025]") && endString.matches("[.]")) {
                     mEditTxt.setText(getString(R.string.input_numbr, mEditTxt.getText().toString(), res.getString(R.string.btnZero)));
                 }
@@ -550,30 +582,26 @@ public class MainActivity extends AppCompatActivity {
      * @return the formatted string to be displayed in UI
      */
 
-    private static String formatResult(double result) {
+    private String formatResult(double result) {
 
         DecimalFormat decimalFormat;
+
         decimalFormat = new DecimalFormat("0", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
-        decimalFormat.setMaximumFractionDigits(10);
+        decimalFormat.setMaximumFractionDigits(5);
         decimalFormat.setRoundingMode(RoundingMode.CEILING);
 
-        if (Double.toString(result).length() > 10) {
-            decimalFormat = new DecimalFormat("#.00", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
-
-            double formattedResult = Double.parseDouble(decimalFormat.format(result));
-            double diff = result - formattedResult;
-
-            decimalFormat = new DecimalFormat("0", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
-
-            if (diff <= 0.00001) {
-                decimalFormat = new DecimalFormat("#.00", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
-                result = Double.parseDouble(decimalFormat.format(result));
-                return Double.toString(result);
-            }
+        if (Double.toString(result).length() > 15) {
+            decimalFormat = new DecimalFormat("0.######E0", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
+            result = Double.parseDouble(decimalFormat.format(result));
+        }
+        if (Double.toString(result).length() < 5) {
+            decimalFormat = new DecimalFormat("0.#", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
+            result = Double.parseDouble(decimalFormat.format(result));
         }
 
         return decimalFormat.format(result);
     }
+
 
     /**
      * To change the background color of the views for a small duration
@@ -581,7 +609,6 @@ public class MainActivity extends AppCompatActivity {
      *
      * @param view is the view for which background color will be changed
      */
-
 
     private void changeBackgroundColor(View view) {
 

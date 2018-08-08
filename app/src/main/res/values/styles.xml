@@ -73,6 +73,8 @@
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">@dimen/editTxtSize</item>
         <item name="android:maxLength">75</item>
+        <item name="android:longClickable">false</item>
+        <item name="android:textIsSelectable">false</item>
 
         <!-- make Edit Text view have single line scrolled horizontally -->
         <item name="android:maxLines">1</item>
@@ -94,7 +96,8 @@
         <!-- make Text view have single line scrolled horizontally -->
         <item name="android:maxLines">1</item>
         <item name="android:lines">1</item>
-        <item name="android:singleLine">true</item>
+        <item name="android:scrollHorizontally">true</item>
+        <item name="android:ellipsize">none</item>
     </style>
 
 </resources>
