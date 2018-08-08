@@ -1,5 +1,7 @@
 package com.example.harinie.calculator;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -54,6 +56,10 @@ public class MainActivity extends AppCompatActivity {
 
     private Button mClear;
     private Button mBackspace;
+
+    private Thread textClearer;
+    private Thread editTxtColorFlasher;
+    private Thread resTxtColorFlasher;
 
     private Pattern pattern = Pattern.compile("[\\u002B\\u002D\\u00D7\\u00F7\\u0025]");
 
@@ -260,9 +266,9 @@ public class MainActivity extends AppCompatActivity {
         mClear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mEditTxt.setText(null);
-                mResTxt.setText(null);
-                adjustCursor();
+                editTxtColorFlasher.start();
+                resTxtColorFlasher.start();
+                textClearer.start();
             }
         });
 
@@ -285,6 +291,44 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 computeInput();
+            }
+        });
+
+        textClearer = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mEditTxt.setText(null);
+                        mResTxt.setText(null);
+                        adjustCursor();
+                    }
+                });
+            }
+        });
+
+        editTxtColorFlasher = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        changeBackgroundColor(mEditTxt);
+                    }
+                });
+            }
+        });
+
+        resTxtColorFlasher = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        changeBackgroundColor(mResTxt);
+                    }
+                });
             }
         });
 
@@ -529,6 +573,24 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return decimalFormat.format(result);
+    }
+
+    /**
+     * To change the background color of the views for a small duration
+     * showing all clear action performed
+     *
+     * @param view is the view for which background color will be changed
+     */
+
+
+    private void changeBackgroundColor(View view) {
+
+        ObjectAnimator animator = ObjectAnimator.ofInt(view, "backgroundColor", R.color.colorPrimary, android.R.color.transparent);
+        animator.setDuration(25);
+        animator.setRepeatCount(2);
+        animator.setRepeatMode(ValueAnimator.REVERSE);
+        animator.start();
+
     }
 
 }
