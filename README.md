@@ -14,5 +14,4 @@ The very first app I've tried ! <br>Just listed what all I have implemented - ma
 - Created a customised Toast **_VibratingToast_** to show when max length of edit text reached.
 
 ### Note
-
 Feedbacks always welcome for making my learning curve better and better.
