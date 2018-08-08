@@ -2,7 +2,7 @@
 The very first app I've tried ! <br>Just listed what all I have implemented - may seem very simple or even silly for experts :yum:
 </br>
 
-## Features of the app:
+## Features of the app
 - Uses objecthunter **exp4j** Math Expression evaluator for computin input.
 - Still formats the result by separate function to make UI Experience better in viewing the results.
 - User not allowed to input two consequent math symbols including dot (negative sign excepted).
