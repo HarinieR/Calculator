@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
            Disable the soft keyboard that automatically pops up from the edit text view when clicked or touched
            by using InputMethodManager (imm)
          */
-        
+
         mEditTxt.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -420,7 +420,7 @@ public class MainActivity extends AppCompatActivity {
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             String currentText = mEditTxt.getText().toString();
 
-            if (currentText.length() > 75) {
+            if (currentText.length() >= 50) {
                 mEditTxt.setText(currentText.subSequence(0, currentText.length() - 1));
                 new VibratingToast(MainActivity.this, "Max word length reached", Toast.LENGTH_SHORT);
             }
@@ -590,13 +590,12 @@ public class MainActivity extends AppCompatActivity {
         decimalFormat.setMaximumFractionDigits(5);
         decimalFormat.setRoundingMode(RoundingMode.CEILING);
 
-        if (Double.toString(result).length() > 15) {
-            decimalFormat = new DecimalFormat("0.######E0", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
-            result = Double.parseDouble(decimalFormat.format(result));
-        }
-        if (Double.toString(result).length() < 5) {
-            decimalFormat = new DecimalFormat("0.#", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
-            result = Double.parseDouble(decimalFormat.format(result));
+        if (Double.toString(result).length() >= 15) {
+            if (Double.toString(result).matches("^.*E\\d*$")) {
+                decimalFormat = new DecimalFormat("0.######E0", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
+            } else {
+                decimalFormat = new DecimalFormat("#.##", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
+            }
         }
 
         return decimalFormat.format(result);
