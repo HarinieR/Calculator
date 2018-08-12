@@ -287,9 +287,11 @@ public class MainActivity extends AppCompatActivity {
         mClear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                editTxtColorFlasher.start();
-                resTxtColorFlasher.start();
-                textClearer.start();
+                if (mEditTxt.getText().length() > 0) {
+                    editTxtColorFlasher.start();
+                    resTxtColorFlasher.start();
+                    textClearer.start();
+                }
             }
         });
 
