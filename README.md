@@ -9,7 +9,7 @@ The very first app I've tried ! <br>Just listed what all I have implemented - ma
 - MATH symbols are given differentiation with different color using **spanning**.
 - **ObjectAnimator** used for changing BackgroundColor of the views for a small duration.
 - Buttons are made to have **Ripple effects**.
-- **ImputMethodManager** to disable Soft keyboard in the Edittext.
+- **InputMethodManager** to disable Soft keyboard in the Edittext.
 - **Threads** to clear the text and animation effect in parallel to show that All clear action performed.
 - Created a customised Toast **_VibratingToast_** to show when max length of edit text reached.
 
