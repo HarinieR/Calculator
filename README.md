@@ -13,5 +13,9 @@ The very first app I've tried ! <br>Just listed what all I have implemented - ma
 - **Threads** to clear the text and animation effect in parallel to show that All clear action performed.
 - Created a customised Toast **_VibratingToast_** to show when max length of edit text reached.
 
-### Note
+
+### RESULT
+The generated signed APK successfully got installed in other phone and worked properly :smile:
+
+#### Note
 Feedbacks always welcome for making my learning curve better and better.
